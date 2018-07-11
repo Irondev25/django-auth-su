@@ -9,6 +9,10 @@ app_name = 'user'
 
 password_urls = [
     #password change
+    url(r'^$/', RedirectView.as_view(
+        pattern_name = 'user:pw_reset_start',
+        permanent=False
+    )),
     url(r'^change/$', auth_views.password_change,
         {'template_name': 'user/password_change_form.html',
          'post_change_redirect': reverse_lazy('user:pw_change_done')},
@@ -58,6 +62,10 @@ urlpatterns = [
     url(r'^create/done/$', TemplateView.as_view(
         template_name='user/user_create_done.html'),
         name='create_done'),
+    url(r'^activate/', RedirectView.as_view(
+        pattern_name = 'user:resend_activation',
+        permanent=False
+    )),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         ActivateAccount.as_view(), name='activate'),
     url(r'^activate/resend/$', ResendActivationEmail.as_view(),
