@@ -1,0 +1,8 @@
+{% extends parent_template|default:'user/base_user.html' %} 
+{% block title %} 
+{{ block.super }} - Account Created 
+{% endblock title %} 
+{% block content %}
+<p>Your account has been created!</p>
+<p>Please check your email for activation link.</p>
+{% endblock content %}

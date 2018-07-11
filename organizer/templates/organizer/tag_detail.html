@@ -1,0 +1,68 @@
+{% extends parent_template|default:"organizer/base_organizer.html" %}
+{% block title %}
+{{block.super}} - {{tag.name|title}}
+{% endblock title %}
+{% block content %}
+<h2>{{tag.name|title}}</h2>
+{% if perms.organizer.change_tag or perms.organizer.delete_tag %}
+<table>
+    <tr>
+        {% if perms.organizer.change_tag %}
+        <th>
+            <button class="btn btn-sm btn-outline-primary">
+                <a href="{{tag.get_update_url}}">Edit Tag</a>
+            </button>
+        </th>
+        {% endif %}
+        {% if perms.organizer.delete_tag %}
+        <th>
+            <button class="btn btn-sm btn-outline-danger">
+                <a href="{{tag.get_delete_url}}">Delete</a>
+            </button>
+        </th>
+        {% endif %}
+    </tr>
+</table>
+{% endif %}
+{% if tag.startups.all %}
+<section>
+    <h3>Startup{{tag.startups.count|pluralize}}</h3>
+    <p>This tag is associated with {{tag.startups.count}} startup{{tag.startups.count|pluralize}}</p>
+    <ul>
+        {% for startup in tag.startups.all %}
+        <li>
+            <a href="{{startup.get_absolute_url}}">{{startup.name}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %} 
+{% if perms.blog.view_future_post %}
+    {% if tag.blog_posts.all %}
+    <section>
+        <h3>Blog Post{{tag.blog_posts.count|pluralize}}</h3>
+        <ul>
+            {% for post in tag.blog_posts.all %}
+            <li>
+                <a href="{{post.get_absolute_url}}">{{post.title|title}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+{% else %}
+    <section>
+        <h3>Blog Post{{tag.published_posts|pluralize}}</h3>
+        <ul>
+            {% for post in tag.published_posts %}
+            <li>
+                <a href="{{post.get_absolute_url}}">{{post.title|title}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %} 
+{% if not tag.startups.all and not tag.blog_posts.all %}
+<p>This tag is not releted to any content.</p>
+{% endif %}
+{% endblock content %}

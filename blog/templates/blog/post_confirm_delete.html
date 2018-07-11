@@ -1,0 +1,25 @@
+{% extends parent_template|default:'blog/base_blog.html' %} 
+{% block title %} {{ block.super }} - Delete Post 
+{% endblock title %} 
+{% block content %}
+<div class="container">
+    <div>
+        <form action="{{post.get_delete_url}}" method="post">
+            {% csrf_token %} 
+            <p>Are you sure you want to delete post {{post.title}}?</p>
+            <table>
+                <tr>
+                    <th>
+                        <button class="btn btn-outline-primary">
+                            <a href="{{post.get_absolute_url}}">Cancle</a>
+                        </button>
+                    </th>
+                    <th>
+                        <button type="submit" class="btn btn-outline-danger">Delete Post</button>
+                    </th>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+{% endblock content %}

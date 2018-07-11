@@ -1,0 +1,7 @@
+.add-organizer {
+    border: solid black 1px;
+    border-radius: 500px;
+    max-width: max-content;
+    padding: 0px 15px;
+    margin: 25px 0 25px 0;
+}

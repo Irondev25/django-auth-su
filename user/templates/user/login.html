@@ -1,0 +1,24 @@
+{% extends parent_template|default:'user/base_user.html' %} 
+{% block title %} 
+{{ block.super }} - Login 
+{% endblock title %} 
+{% block content %}
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        {% include "user/login_form.html" %}
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="{% url 'user:create' %}">Register for New Account</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{% url 'user:pw_reset_start' %}">Forgot Password!</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{% url 'user:resend_activation' %}">Lost Activation Email?</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+{% endblock content %}

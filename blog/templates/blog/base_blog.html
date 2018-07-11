@@ -1,0 +1,5 @@
+{% extends parent_template|default:'base.html' %}
+{% load staticfiles %}
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'blog/blog.css' %}">
+{% endblock css_block %}

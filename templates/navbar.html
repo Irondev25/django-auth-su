@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'blog:post_list' %}">Blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% ifequal request.path startup_list_link %}active{% endifequal %}">
+                    <a class="nav-link" href="{{startup_list_link}}">Startup</a>
+                    <span class="sr-only">(current)</span>
+                </li>
+                <li class="nav-item {% ifequal request.path tag_list_link %}active{% endifequal %}">
+                    <a class="nav-link" href="{{tag_list_link}}">Tag</a>
+                    <span class="sr-only">(current)</span>
+                </li>
+                <li class="nav-item {% ifequal request.path contact_link %}active{% endifequal %}">
+                    <a class="nav-link" href="{{contact_link}}">Contact Us</a>
+                    <span class="sr-only">(current)</span>
+                </li>
+                <li class="nav-item {% ifequal request.path about_link %}active{% endifequal %}">
+                    <a class="nav-link" href="{{about_link}}">About</a>
+                    <span class="sr-only">(current)</span>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto navbar-right">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    {% if user.is_superuser %}
+                    <a href="{% url 'admin:index' %}" target="_blank" class="nav-link">
+                        Welcome {{user.username}}
+                    </a>
+                    {% else %}
+                    <a href="#" class="nav-link">
+                        Welcome {% if user.get_short_name %} {{user.get_short_name}} {% elif user.get_full_name %} {{user.get_full_name}} {% else%}
+                        {{user.username}} {% endif %}
+                    </a>
+                    {% endif %}
+                </li>
+                <li class="nav-item {% ifequal request.path logout_link %}active{% endifequal %}">
+                    <a href="{% url 'user:logout' %}?next={{request.path}}" class="nav-link">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item {% ifequal request.path login_link %}active{% endifequal %}">
+                    <a href="{% url 'user:login' %}?next={{request.path}}" class="nav-link">Login</a>
+                </li>
+                <li class="nav-item {% ifequal request.path login_link %}active{% endifequal %}">
+                    <a class="nav-link" href="{% url 'user:create' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
