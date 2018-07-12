@@ -1,4 +1,4 @@
-from django.views.generic import View
+from django.views.generic import View, DetailView, UpdateView
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
@@ -22,7 +22,9 @@ from django.utils.http import urlsafe_base64_decode
 
 
 from .forms import UserCreationForm, ResendActivationEmailForm
-from .utils import MailContextViewMixin
+from .utils import MailContextViewMixin, ProfileGetObjectMixin
+from .decorators import class_login_required
+from .models import Profile
 # Create your views here.
 
 
@@ -118,7 +120,7 @@ class ActivateAccount(View):
         else:
             return TemplateResponse(
                 request,
-                self.template
+                self.template_name
             )
 
 
@@ -160,3 +162,20 @@ class ResendActivationEmail(MailContextViewMixin, View):
             'Activation Email Sent!'
         )
         return redirect(self.success_url)
+
+
+@class_login_required
+class ProfileDetail(ProfileGetObjectMixin, DetailView):
+    model = Profile
+    template_name = 'user/profile_detail.html'
+    context_object_name = 'profile'
+
+
+@class_login_required
+class ProfileUpdate(ProfileGetObjectMixin, UpdateView):
+    model = Profile
+    fields = ('about',)
+    template_name = 'user/profile_form_update.html'
+
+class PublicProfileDetail(DetailView):
+    model = Profile

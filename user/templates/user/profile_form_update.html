@@ -1,0 +1,13 @@
+{% extends parent_template|default:'user/base_user.html' %}
+
+{% block title %}
+{{ block.super }} - Update Profile
+{% endblock title %}
+
+{% block content %}
+<form action="{{profile_get_update_url}}" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-outline-primary">Update Profile</button>
+</form>
+{% endblock content %}

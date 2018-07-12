@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 #To generate hashed tokens
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth import get_user
 
 #helps converts string to bytes objects
 from django.utils.encoding import force_bytes
@@ -189,3 +190,13 @@ class MailContextViewMixin:
             'request': request,
             'subject_template_name': self.subject_template_name,
         }
+
+
+class ProfileGetObjectMixin:
+
+    def get_object(self, queryset=None):
+        """
+        return profile based on the user logged in
+        """
+        current_user = get_user(self.request)
+        return current_user.profile

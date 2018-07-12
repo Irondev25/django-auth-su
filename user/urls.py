@@ -4,7 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import RedirectView, TemplateView
 from django.core.urlresolvers import reverse_lazy
 
-from .views import DisableAccount, ActivateAccount, CreateAccount, ResendActivationEmail
+from .views import (DisableAccount, ActivateAccount, CreateAccount, 
+                    ResendActivationEmail, ProfileDetail, ProfileUpdate, PublicProfileDetail)
 app_name = 'user'
 
 password_urls = [
@@ -62,12 +63,15 @@ urlpatterns = [
     url(r'^create/done/$', TemplateView.as_view(
         template_name='user/user_create_done.html'),
         name='create_done'),
-    url(r'^activate/', RedirectView.as_view(
-        pattern_name = 'user:resend_activation',
-        permanent=False
-    )),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         ActivateAccount.as_view(), name='activate'),
     url(r'^activate/resend/$', ResendActivationEmail.as_view(),
         name='resend_activation'),
+    url(r'^activate/', RedirectView.as_view(
+        pattern_name='user:resend_activation',
+        permanent=False
+    )),
+    url(r'^profile/$', ProfileDetail.as_view(), name='profile'),
+    url(r'^profile/edit/$', ProfileUpdate.as_view(), name='profile_update'),
+    url(r'^(?P<slug>[\w\-]+)/$', PublicProfileDetail.as_view(), name='public_profile')
 ]
